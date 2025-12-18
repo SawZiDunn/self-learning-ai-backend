@@ -1,31 +1,93 @@
-# Issa Compass - Self-Learning AI Assistant 🧭
+# Self-Learning AI Assistant for Visa Consultation
 
-A self-improving AI chatbot for visa consultation that learns from real consultant conversations. Built for the Vibe Hackathon.
+An intelligent chatbot system that learns from real consultant conversations to provide accurate visa consultation responses. The AI continuously improves itself by analyzing differences between its responses and actual consultant replies, automatically refining its behavior over time.
 
-## 🚀 Features
+**Live Demo:** https://sawzidunn-hackathon.up.railway.app
 
--   **Smart Response Generation**: AI generates human-like consultant responses based on conversation context
--   **Self-Learning System**: Automatically improves by comparing its responses to real consultant replies
--   **Prompt Evolution**: Tracks prompt changes over time in database
--   **Multiple LLM Support**: Works with Groq (Llama), Gemini, and OpenAI
--   **REST API**: Easy-to-use endpoints for integration
+## Overview
 
-## 📁 Project Structure
+This system implements a self-improving AI assistant that:
+
+-   Generates natural, human-like responses to visa consultation queries
+-   Learns from real consultant conversations without manual intervention
+-   Tracks and versions all improvements in a database
+-   Supports multiple LLM providers for flexibility and reliability
+
+## Core Capabilities
+
+**Intelligent Response Generation**
+
+-   Contextual understanding of multi-turn conversations
+-   Natural language responses that match consultant communication style
+-   Handles complex visa scenarios including eligibility, requirements, and procedures
+
+**Autonomous Learning System**
+
+-   Compares AI predictions with actual consultant responses
+-   Identifies gaps in knowledge, tone, or format
+-   Automatically updates system prompts based on analysis
+-   Stores complete history of all improvements with reasoning
+
+**Prompt Management**
+
+-   Database-backed prompt versioning
+-   Full audit trail of changes
+-   Manual override capability for specific improvements
+-   Performance tracking across iterations
+
+**Multi-LLM Architecture**
+
+-   Primary: Groq (Llama 3.3 70B) for speed and cost efficiency
+-   Alternative: Google Gemini for redundancy
+-   Optional: OpenAI GPT models
+-   Easy provider switching without code changes
+
+## Technology Stack
+
+**Backend Framework**
+
+-   Python 3.13
+-   Flask 3.0.0 - Lightweight REST API server
+-   Gunicorn - Production WSGI server
+
+**AI/ML Integration**
+
+-   Groq API - Primary LLM provider (Llama 3.3 70B)
+-   Google Generative AI - Alternative provider (Gemini 1.5)
+-   Custom prompt engineering for visa consultation domain
+
+**Database & Storage**
+
+-   Supabase (PostgreSQL) - Prompt versioning and history
+-   JSON-based training data (15 real conversations, 128 examples)
+
+**Development Tools**
+
+-   python-dotenv - Environment configuration
+-   httpx - Async HTTP client for LLM APIs
+-   Cursor AI - Development assistant
+
+**Deployment**
+
+-   Railway.app - Cloud hosting platform
+-   Docker - Containerization support
+-   Git - Version control
+
+## Architecture
 
 ```
-├── app.py                  # Flask API server with all endpoints
-├── ai_system.py           # Core self-learning AI logic
-├── parse_conversations.py # Training data parser
-├── llm_integration.py     # Multi-provider LLM client
-├── database.py            # Supabase prompt storage
+├── app.py                  # Flask API server with 8 REST endpoints
+├── ai_system.py           # Self-learning logic and training pipeline
+├── llm_integration.py     # Multi-provider LLM abstraction layer
+├── database.py            # Supabase client and prompt management
 ├── prompts.py             # System prompts (chatbot & editor)
-├── config.py              # Configuration management
-├── conversations.json     # Training data (128 examples)
-├── requirements.txt       # Python dependencies
-└── .env.example          # Environment variables template
+├── parse_conversations.py # Training data extraction and formatting
+├── config.py              # Configuration and validation
+├── conversations.json     # Real consultant conversation data
+└── requirements.txt       # Python dependencies
 ```
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### 1. Get API Keys (All FREE!)
 
@@ -118,7 +180,7 @@ python3 app.py
 
 Server runs on `http://localhost:5000`
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### 1. Generate AI Reply
 
@@ -200,7 +262,7 @@ curl -X POST http://localhost:5000/train \
   -d '{"numSamples": 5}'
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Deploy to Railway (Easiest)
 
@@ -232,7 +294,7 @@ LLM_PROVIDER=groq
 PORT=5000
 ```
 
-## 🧪 Testing Examples
+## Testing Examples
 
 ### Test Conversation Flow
 
@@ -266,29 +328,157 @@ curl -X POST http://localhost:5000/train \
   -d '{"numSamples": 10}'
 ```
 
-## 🎯 How Self-Learning Works
+## How the Self-Learning System Works
 
-1. **AI generates a reply** to customer message
-2. **Compare** AI reply vs real consultant reply
-3. **Editor LLM analyzes** differences:
-    - Tone mismatch?
-    - Missing information?
-    - Wrong format?
-4. **Editor surgically updates** the main prompt
-5. **Prompt saved to database** with version history
-6. **Next reply uses improved prompt** 🔄
+The AI improves itself through a continuous feedback loop:
 
-## 📊 Training Data
+**1. Response Generation Phase**
 
--   **15 conversations** with real customer-consultant exchanges
--   **128 training examples** extracted
--   Covers scenarios:
-    -   Remote workers
-    -   Freelancers
-    -   Medical visitors
-    -   Edge cases (visa rejections, document issues)
+```
+Client Question → Current Prompt → LLM → AI Response
+```
 
-## 🔥 Advanced Features to Add (Reach A-Level)
+The system retrieves the latest prompt from the database and uses it to generate a response based on conversation context.
+
+**2. Comparison Phase**
+
+```
+AI Response + Real Consultant Response → Analysis
+```
+
+When training data is available, the system compares what the AI would say versus what a real consultant actually said.
+
+**3. Analysis Phase**
+
+```
+Editor LLM → Identifies Gaps → Generates Improvements
+```
+
+A separate "editor" LLM analyzes differences:
+
+-   Tone and style mismatches
+-   Missing critical information
+-   Incorrect formatting or structure
+-   Logic errors or inaccuracies
+
+**4. Update Phase**
+
+```
+Improved Prompt → Database → Version History
+```
+
+The editor surgically updates specific parts of the prompt with precise changes, then stores it with full audit trail.
+
+**5. Iteration**
+
+```
+Next Request → Uses Improved Prompt → Better Response
+```
+
+All subsequent requests automatically use the improved prompt, making the system continuously better.
+
+## AI Integration Approach
+
+**Dual-LLM Architecture**
+
+I implemented a unique two-model system:
+
+1. **Main Chatbot LLM** - Responds to customer queries
+
+    - Uses detailed system prompt with visa knowledge
+    - Formatted to match consultant communication style
+    - Returns JSON-structured responses for easy parsing
+
+2. **Editor LLM** - Analyzes and improves the chatbot
+    - Receives both AI and real responses
+    - Identifies specific areas needing improvement
+    - Updates prompts with surgical precision
+    - Documents reasoning for each change
+
+**Why This Works**
+
+Traditional chatbots are static - they only work as well as their initial prompt. This system:
+
+-   Learns from real interactions without manual retraining
+-   Preserves successful behaviors while fixing problems
+-   Maintains full transparency of all changes
+-   Scales knowledge automatically as more data becomes available
+
+**Training Data Processing**
+
+The system parses real conversation logs to extract:
+
+-   Client message sequences (single or multiple messages)
+-   Full conversation history up to that point
+-   Actual consultant responses
+-   Context about visa type and situation
+
+This creates supervised learning examples that drive improvements.
+
+## Implementation Details
+
+**Prompt Engineering**
+
+-   Base prompt covers Thai DTV visa knowledge, eligibility, process
+-   Includes response style guidelines (concise, friendly, professional)
+-   Structured to output JSON for reliable parsing
+-   Editor prompt focuses on gap analysis and surgical updates
+    What I Built
+
+**Core Innovation: Self-Improving AI Without Manual Training**
+
+Rather than building a static chatbot that requires constant manual updates, I created a system that learns autonomously. The key insight was using a second LLM as a "critic" that analyzes the main chatbot's performance and makes targeted improvements to its behavior.
+
+**Technical Achievements:**
+
+1. Designed a dual-LLM architecture where models work together
+2. Implemented automatic prompt versioning with full audit trails
+3. Created a training pipeline that processes real conversation data
+4. Built a multi-provider LLM system for reliability and cost optimization
+5. Deployed production-ready API with 8 functional endpoints
+6. Integrated PostgreSQL database for persistent prompt storage
+7. Wrote comprehensive error handling and fallback mechanisms
+
+**Why This Approach Is Effective:**
+
+Traditional ML requires labeled datasets, model training infrastructure, and specialized expertise. This system achieves similar results using:
+
+-   Prompt engineering instead of model fine-tuning
+-   LLM-as-judge for quality assessment
+-   Incremental improvements rather than batch retraining
+-   Zero infrastructure beyond API calls and a database
+
+The result is a system that gets smarter with every conversation it processes, without requiring data scientists or expensive compute resources.
+
+## Testing
+
+See [TEST_COMMANDS.md](TEST_COMMANDS.md) for complete API testing examples.
+
+Quick test:
+
+```bash
+curl https://sawzidunn-hackathon.up.railway.app/
+```
+
+## Built for Vibe Hackathon
+
+**Repository:** https://github.com/sawzidunn/self-learning-ai-assistant  
+**Live Server:** https://sawzidunn-hackathon.up.railway.app  
+**Documentation:** TEST_COMMANDS.md, DEPLOYMENT_STATUS.md
+
+Created using Cursor AI, Flask, Groq, and Supabase
+
+-   Provider switching if one LLM service fails
+-   Comprehensive logging for debugging
+
+**API Design**
+
+-   RESTful endpoints following standard conventions
+-   JSON request/response format
+-   Clear error messages with HTTP status codes
+-   CORS-ready for frontend integration
+
+## Future Enhancements
 
 1. **Frontend Dashboard** (Next.js)
 
@@ -321,7 +511,7 @@ curl -X POST http://localhost:5000/train \
     - Vector database for visa knowledge
     - Semantic search for similar cases
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 **Error: "Supabase client not initialized"**
 
@@ -339,7 +529,7 @@ curl -X POST http://localhost:5000/train \
 -   System has fallback handling
 -   Try different provider or adjust temperature
 
-## 📝 Notes
+## Notes
 
 -   Uses Groq (Llama 3.1 70B) by default - very fast & free
 -   Supabase free tier: 500MB database (more than enough)
@@ -348,9 +538,9 @@ curl -X POST http://localhost:5000/train \
 
 ## 🏆 Built for Vibe Hackathon
 
-Created by [Your Name]
-GitHub: [Your GitHub]
-Deployed: [Your Railway/Render URL]
+Created by Saw Zi Dunn
+GitHub: https://github.com/SawZiDunn/self-learning-ai-backend
+Deployed: https://sawzidunn-hackathon.up.railway.app
 
 ---
 
