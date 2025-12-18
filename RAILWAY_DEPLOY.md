@@ -1,10 +1,11 @@
 # 🚂 Railway Deployment Guide - Super Easy!
 
 ## **What is Railway?**
-- Free $5 credit per month
-- Deploy directly from GitHub
-- Auto-deploy on git push
-- Built-in domain & SSL
+
+-   Free $5 credit per month
+-   Deploy directly from GitHub
+-   Auto-deploy on git push
+-   Built-in domain & SSL
 
 ---
 
@@ -29,17 +30,20 @@ git push -u origin main
 ## **STEP 2: Deploy on Railway**
 
 ### 2.1: Sign Up
+
 1. Go to https://railway.app
 2. Click **"Login"** → **"Login with GitHub"**
 3. Authorize Railway
 
 ### 2.2: Create New Project
+
 1. Click **"New Project"**
 2. Select **"Deploy from GitHub repo"**
 3. Choose your repository: `self-learning-ai-backend`
 4. Railway will auto-detect your Dockerfile
 
 ### 2.3: Add Environment Variables
+
 1. In your Railway project, click **"Variables"** tab
 2. Add these variables (use your actual values from .env file):
 
@@ -51,6 +55,7 @@ PORT=5000
 ```
 
 ### 2.4: Deploy!
+
 1. Click **"Deploy"**
 2. Wait 2-3 minutes ⏳
 3. Railway will give you a URL like: `https://your-app.up.railway.app`
@@ -85,10 +90,11 @@ curl -X POST $API_URL/generate-reply \
 ## **✅ You're Live!**
 
 Your API is now:
-- ✅ Running on Railway
-- ✅ Auto-deploys on git push
-- ✅ Has HTTPS/SSL
-- ✅ Free (with $5/month credit)
+
+-   ✅ Running on Railway
+-   ✅ Auto-deploys on git push
+-   ✅ Has HTTPS/SSL
+-   ✅ Free (with $5/month credit)
 
 ---
 
@@ -114,24 +120,28 @@ git push
 3. See your credit usage
 
 **$5 credit typically covers:**
-- ~500-1000 requests/day
-- 24/7 uptime for small apps
+
+-   ~500-1000 requests/day
+-   24/7 uptime for small apps
 
 ---
 
 ## **Troubleshooting**
 
 ### Build fails
-- Check Railway logs in **"Deployments"** tab
-- Verify environment variables are set
+
+-   Check Railway logs in **"Deployments"** tab
+-   Verify environment variables are set
 
 ### App crashes
-- Check **"Logs"** in Railway dashboard
-- Make sure PORT variable is set
+
+-   Check **"Logs"** in Railway dashboard
+-   Make sure PORT variable is set
 
 ### Need more credit
-- Add payment method for $5/month
-- Or optimize to stay within free tier
+
+-   Add payment method for $5/month
+-   Or optimize to stay within free tier
 
 ---
 

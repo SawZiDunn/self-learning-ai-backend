@@ -44,3 +44,12 @@ htmlcov/
 
 # Logs
 *.log
+flask_output.log
+server.log
+app.log
+
+# Development/Testing files (not needed for Railway)
+demo.py
+test_*.py
+test_*.sh
+setup.sh
